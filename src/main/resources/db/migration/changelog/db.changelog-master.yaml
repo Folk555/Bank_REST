@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      file: db/migration/changelog/init-schema.sql
+  - include:
+      file: db/migration/changelog/init-users.sql
