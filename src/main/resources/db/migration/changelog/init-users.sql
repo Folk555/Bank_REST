@@ -1,13 +1,13 @@
 -- changeset author:folk
--- comment: Создание тестовых пользователей
-INSERT INTO bank_user (name)
+INSERT INTO bank_user (name, username, password, role, enabled)
 VALUES
-    ('Alice'),
-    ('Bob'),
-    ('Charlie');
+    ('Alice', 'alice', '$2a$10$kQEHTEtDudP0nblSHSZXy.IIDhZBX9P9VbCzKL8wkEXSq9bB6BYsC', 'USER', true),
+    ('Bob', 'bob', '$2a$10$kQEHTEtDudP0nblSHSZXy.IIDhZBX9P9VbCzKL8wkEXSq9bB6BYsC', 'USER', true),
+    ('Charlie', 'charlie', '$2a$10$kQEHTEtDudP0nblSHSZXy.IIDhZBX9P9VbCzKL8wkEXSq9bB6BYsC', 'ADMIN', true);
+
+-- пароль для всех "fff"
 
 -- changeset author:folk
--- Вставка банковских карт (предполагаем, что id пользователей = 1, 2, 3)
 INSERT INTO bank_card (card_num, bank_user_id, expiration_date, status, balance)
 VALUES
     ('1111111111111111', 1, '2027-12-31', 'ACTIVE', 1000.00),

@@ -22,7 +22,7 @@ public class Card {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bank_user_id", nullable = false)
-    private BankUser user;
+    private User user;
 
     @Column(name = "expiration_date", nullable = false)
     private LocalDate expirationDate;

@@ -7,6 +7,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+//Я не везде пробрасывал "нужные" ошибки, в большинстве случаев это RuntimeError. Экономия времени
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 

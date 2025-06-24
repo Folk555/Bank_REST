@@ -1,6 +1,6 @@
 package com.example.bankcards.dto;
 
-import com.example.bankcards.entity.BankUser;
+import com.example.bankcards.entity.User;
 import com.example.bankcards.entity.Card;
 import com.example.bankcards.entity.CardStatus;
 import lombok.Data;
@@ -33,7 +33,7 @@ public class CardDto {
         return dto;
     }
 
-    public static Card transformToEntity(CardDto dto, BankUser user) {
+    public static Card transformToEntity(CardDto dto, User user) {
         Card card = new Card();
         card.setCardNum(dto.getMaskedCardNum());
         card.setExpirationDate(dto.getExpirationDate());

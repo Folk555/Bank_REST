@@ -1,10 +1,10 @@
 package com.example.bankcards.service;
 
 import com.example.bankcards.dto.CardDto;
-import com.example.bankcards.entity.BankUser;
+import com.example.bankcards.entity.User;
 import com.example.bankcards.entity.Card;
 import com.example.bankcards.entity.CardStatus;
-import com.example.bankcards.repository.BankUserRepository;
+import com.example.bankcards.repository.UserRepository;
 import com.example.bankcards.repository.CardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,11 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class CardServiceImpl implements CardService {
 
     private final CardRepository cardRepository;
-    private final BankUserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     public CardDto create(CardDto dto) {
-        BankUser user = userRepository.findById(dto.getId())
+        User user = userRepository.findById(dto.getId())
                 .orElseThrow(() -> new RuntimeException("юзер не найден"));
 
         Card card = CardDto.transformToEntity(dto, user);
@@ -58,5 +58,40 @@ public class CardServiceImpl implements CardService {
     @Override
     public void delete(Long id) {
         cardRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<CardDto> getUserCards(String username, int page, int size) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+
+        return cardRepository.findCardsByUserId(user.getId(), PageRequest.of(page, size))
+                .map(CardDto::getFromCardEntity);
+    }
+
+    @Override
+    public void blockCard(Long cardId, String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+
+        Card card = cardRepository.findById(cardId)
+                .orElseThrow(() -> new RuntimeException("Карта не найдена"));
+
+        if (!card.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("Нет доступа к карте");
+        }
+
+        card.setStatus(CardStatus.BLOCKED);
+        cardRepository.save(card);
+    }
+
+    @Override
+    public void setCardStatus(Long id, CardStatus status) {
+        Card card = cardRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Карта не найдена"));
+
+        card.setStatus(status);
+        cardRepository.save(card);
     }
 }
