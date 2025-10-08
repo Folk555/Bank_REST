@@ -3,7 +3,6 @@ package com.example.bankcards.dto;
 import com.example.bankcards.security.Role;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.OneToMany;
 import lombok.Data;
 
 import java.util.List;
